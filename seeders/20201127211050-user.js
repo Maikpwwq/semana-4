@@ -7,6 +7,7 @@ module.exports = {
             email: 'prueba@gmail.com',
             password: '$2y$08$FTP/jKGNASwJf0ero7SBe.kQmUsOSjWYupPZ6/lS6en6RcithXFKO',
             rol: 'Administrador',
+            estado: 1,
             createdAt: new Date(),
             updatedAt: new Date()
         }]);

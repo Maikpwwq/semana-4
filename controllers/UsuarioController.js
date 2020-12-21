@@ -1,23 +1,31 @@
 const models = require('../models');
 const bcrypt = require('bcryptjs');
 // Servicios
-const token = require('../services/token');
+const tokenServices = require('../services/token');
 
 const login = async(req, res, next) => {
 	try {
 		console.log(req.body.email)
-		let user = await models.Usuario.findOne({ where: { 
-			email: req.body.email } 
+		let user = await models.Usuario.findOne({ 
+			where: { 
+				email: req.body.email 
+			},
 		});
 		if (user) {
 			let match = bcrypt.compare(req.body.password, user.password);
+			console.log('match passwords compare')
 			if (match) {
-				console.log(user.rol);
-				let tokenReturn = await token.encode(user.id, user.rol);
-				res.status(200).json({ user, tokenReturn });
+				let tokenReturn = await tokenServices.encode(user.id, user.rol);
+				console.log(user.id, user.rol);
+				res.status(200).json({ 
+					tokenReturn, 
+					auth: true 
+				});
 			} else {
 				res.status(401).send({
-					message: 'Password Incorrecto'
+					message: 'Password Incorrecto',
+					auth: false,
+                    tokenReturn: null,
 				});
 			}
 		} else {

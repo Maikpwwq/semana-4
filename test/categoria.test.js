@@ -1,5 +1,5 @@
-const request = require('supertest')
-const app = require('../index')
+const request = require('supertest');
+const app = require('../index');
 
 describe('Categoria Endpoints', () => {
     var token;
@@ -9,21 +9,22 @@ describe('Categoria Endpoints', () => {
             .post('/api/usuario/login')
             .send({
                 email: 'prueba@gmail.com',
-                password: 'micontraseña',
-
+                password: 'micontraseña'
             })
             .end((err, response) => {
                 var result = JSON.parse(response.text);
                 token = result.tokenReturn;
+                //console.log(token);
                 done();
             });
     });
+    
     it('listas de categoria', async() => {
         const res = await request(app)
             .get('/api/categoria/list')
-            .set('token', token)
+            //.set('token', token)
         expect(res.statusCode).toEqual(200)
-    })
+    });
 
     it('agregar un nuevo categoria', async() => {
         const res = await request(app)
@@ -31,11 +32,10 @@ describe('Categoria Endpoints', () => {
             .set('token', token)
             .send({
                 nombre: 'categirua_test',
-                descripcion: 'lorem limpsus',
-                estado: 1,
+                descripcion: 'lorem limpsus'
             })
         expect(res.statusCode).toEqual(200)
-    })
+    });
 
     it('update categoria', async() => {
         const res = await request(app)
@@ -45,22 +45,20 @@ describe('Categoria Endpoints', () => {
                 nombre: 'articulo_test_update',
                 descripcion: 'lorem limpsus update',
                 codigo: '22225',
-                id: 1
-
+                id: 1,
             })
         expect(res.statusCode).toEqual(200)
-    })
+    });
 
     it('deactivate categoria', async() => {
         const res = await request(app)
             .put('/api/categoria/activate')
             .set('token', token)
             .send({
-                id: 1
-
+                id: 1,
             })
         expect(res.statusCode).toEqual(200)
-    })
+    });
 
     it('activate categoria', async() => {
         const res = await request(app)
@@ -70,5 +68,5 @@ describe('Categoria Endpoints', () => {
                 id: 1,
             })
         expect(res.statusCode).toEqual(200)
-    })
-})
+    });
+});

@@ -9,20 +9,20 @@ describe('Articulos Endpoints', () => {
             .post('/api/usuario/login')
             .send({
                 email: 'prueba@gmail.com',
-                password: 'micontraseña',
-
+                password: 'micontraseña'
             })
             .end((err, response) => {
                 var result = JSON.parse(response.text);
                 token = result.tokenReturn;
+                //console.log(token);
                 done();
             });
     });
+    
     it('listas de articulos', async() => {
         const res = await request(app)
             .get('/api/articulo/list')
         expect(res.statusCode).toEqual(200)
-
     })
 
     it('agregar un nuevo articulo', async() => {
@@ -33,9 +33,9 @@ describe('Articulos Endpoints', () => {
                 nombre: 'articulo_test',
                 descripcion: 'lorem limpsus',
                 codigo: '2222',
-                estado: 1,
-                categoriaId: 1,
-
+                precio_venta: 2525,
+                stock: 25,
+                categoriaId: 1
             })
         expect(res.statusCode).toEqual(200)
     })
@@ -49,7 +49,6 @@ describe('Articulos Endpoints', () => {
                 descripcion: 'lorem limpsus update',
                 codigo: '22225',
                 id: 1
-
             })
         expect(res.statusCode).toEqual(200)
     })
@@ -60,7 +59,6 @@ describe('Articulos Endpoints', () => {
             .set('token', token)
             .send({
                 id: 1
-
             })
         expect(res.statusCode).toEqual(200)
     })
@@ -70,7 +68,7 @@ describe('Articulos Endpoints', () => {
             .put('/api/articulo/deactivate')
             .set('token', token)
             .send({
-                id: 1,
+                id: 1
             })
         expect(res.statusCode).toEqual(200)
     })

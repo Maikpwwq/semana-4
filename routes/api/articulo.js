@@ -6,9 +6,10 @@ const auth = require('../../middlewares/auth');
 const router = routerx();
 
 router.get('/list', articuloController.list);
-router.get('/query', articuloController.query);
+// router.get('/query', auth.verifyUsuario, articuloController.query);
+// router.get('/queryCodigo', auth.verifyUsuario, articuloController.queryCodigo);
 router.post('/add', auth.verifyUsuario, articuloController.add);
-router.delete('/remove', articuloController.remove);
+router.delete('/remove', auth.verifyUsuario, articuloController.remove);
 router.put('/update', auth.verifyUsuario, articuloController.update);
 router.put('/activate', auth.verifyUsuario, articuloController.activate);
 router.put('/deactivate', auth.verifyUsuario, articuloController.deactivate);

@@ -3,25 +3,24 @@ const models = require('../models');
 const config = require('../secret/config.js');
 
 const checkToken = async ( token ) => {
-    const _id = null;
+    let localID = null;
     
     try {
-        const { id } = await token.decode(token);
-        _id = id;
-        console.log( _id );
+        const { _id } = decode(token); //jwt await token.
+        localID = _id;
+        console.log( localID );
     } catch ( error ) {
         return false;
     };
     
     const user = await models.Usuario.findOne({
-        where: { id: _id, estado: 1 }
-    });  
+        where: { id: localID, estado: 1 }
+    }); 
     
-    if ( user ) {
-        const token = jws.sign({ _id: _id}, config.secret, {expiresIn:'1d'}); 
+    if ( user ) { 
+        const token = encode(user.id, user.rol);
         return {
-            token, 
-            rol: user.rol
+            token
         }
     } else {
         return false
@@ -31,26 +30,35 @@ const checkToken = async ( token ) => {
 module.exports = {
 
     //generar el token
-    encode: async(_id, rol) => {
-        const token = jwt.sign({_id:_id, rol:rol}, config.secret, {expiresIn:'1d'});
+    encode: async (id, rol) => {
+        //console.log(rol);
+        const token = jwt.sign({
+            id: id,        
+            rol: rol,
+        }, config.secret , {
+            // Expira en 24 horas
+            expiresIn: 86400,
+        });
         return token
     },
     //permite decodificar el token
     decode: async(token) => {
         try {
             //const {id, name, email, rol, estado}
-            const { _id } = await jws.verify(token, config.secret); 
+            const { id } = await jwt.verify(token, config.secret); 
             const user = await models.Usuario.findOne({
-                where: { _id, estado: 1 }
+                where: { id: id, estado: 1 }
             });
             if (user) {
+                console.log(user)
                 return user
             } else {
                 return false
             }
         } catch (error) {
             const newToken = await checkToken(token);
+            console.log('newToken')
             return newToken
         };
-    }
-}
+    },
+};

@@ -6,8 +6,7 @@ describe('login Endpoints', () => {
             .post('/api/usuario/login')
             .send({
                 email: 'prueba@gmail.com',
-                password: 'micontraseña',
-
+                password: 'micontraseña'                
             })
         expect(res.statusCode).toEqual(200)
         expect(res.body).toHaveProperty('tokenReturn');
@@ -18,8 +17,7 @@ describe('login Endpoints', () => {
             .post('/api/usuario/login')
             .send({
                 email: 'prueba@gmail.com',
-                password: 'micontraseñaa',
-
+                password: 'micontraseñaa'
             })
         expect(res.statusCode).toEqual(401)
     })
@@ -29,8 +27,7 @@ describe('login Endpoints', () => {
             .post('/api/usuario/login')
             .send({
                 email: 'prueb@gmail.com',
-                password: 'micontraseña',
-
+                password: 'micontraseña'
             })
         expect(res.statusCode).toEqual(404)
     })
