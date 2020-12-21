@@ -97,6 +97,7 @@ const update = async (req, res, next) => {
             descripcion: req.body.descripcion,
             codigo: req.body.codigo,
         }, { where: { id: req.body.id } });
+        console.log(reg);
         if (reg == 0) {
             res.status(404).send({ 
                 message: "La categoria no existe" 
@@ -119,6 +120,7 @@ const activate = async (req, res, next) => {
             { estado: 1 }, 
             { where: { id: req.body.id } }
         );
+        console.log(reg);
         if (reg == 0) {
             res.status(404).send({ 
                 message: "La categoria no existe" 
@@ -140,6 +142,7 @@ const deactivate = async (req, res, next) => {
             { estado: 0 }, 
             { where: { id: req.body.id } }
         );
+        console.log(reg);
         if (reg == 0) {
             res.status(404).send({ 
                 message: "La categoria no existe" 

@@ -12,7 +12,7 @@ const login = async(req, res, next) => {
 			},
 		});
 		if (user) {
-			let match = bcrypt.compare(req.body.password, user.password);
+			let match = await bcrypt.compare(req.body.password, user.password);
 			console.log('match passwords compare')
 			if (match) {
 				let tokenReturn = await tokenServices.encode(user.id, user.rol);

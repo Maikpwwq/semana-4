@@ -6,7 +6,7 @@ const checkToken = async ( token ) => {
     let localID = null;
     
     try {
-        const { _id } = decode(token); //jwt await token.
+        const { _id } = await token.decode(token); //jwt await token.
         localID = _id;
         console.log( localID );
     } catch ( error ) {
@@ -14,11 +14,11 @@ const checkToken = async ( token ) => {
     };
     
     const user = await models.Usuario.findOne({
-        where: { id: localID, estado: 1 }
+        where: { id: localID } // , estado: 1
     }); 
     
     if ( user ) { 
-        const token = encode(user.id, user.rol);
+        const token = await encode(user.id, user.rol);
         return {
             token
         }
@@ -47,17 +47,15 @@ module.exports = {
             //const {id, name, email, rol, estado}
             const { id } = await jwt.verify(token, config.secret); 
             const user = await models.Usuario.findOne({
-                where: { id: id, estado: 1 }
+                where: { id: id } // , estado: 1
             });
             if (user) {
-                console.log(user)
                 return user
             } else {
                 return false
             }
         } catch (error) {
             const newToken = await checkToken(token);
-            console.log('newToken')
             return newToken
         };
     },

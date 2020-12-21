@@ -1,5 +1,4 @@
 const models = require('../models');
-const Categoria = require('../models').Categoria;
 
 const add = async (req, res, next) => {
     try {
@@ -64,12 +63,12 @@ const queryCodigo = async(req, res, next) => {
 const list = async (req, res, next) => {
     try {
         const reg = await models.Articulo.findAll({
-            include: [{
-                model: Categoria, // from model categoria
+            /*include: [{
+                model: models.Categoria, // from model categoria
                 as: 'detalle-categoria', 
                 required: true, // Registro innerJoin solo a un modelo asociado                
                 // atributes: ["id", "nombre", "descripcion"]
-            }],
+            }],*/
         });
         res.status(200).json(reg);
     } catch (e) {
@@ -97,6 +96,7 @@ const remove = async (req, res, next) => {
         next(e)
     }
 };
+
 const update = async (req, res, next) => {
     try {
         const reg = await models.Articulo.update({
