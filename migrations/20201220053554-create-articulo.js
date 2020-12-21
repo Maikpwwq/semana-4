@@ -30,7 +30,7 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
         references:{ // Articulo belongsTo Categoria 1:1
-          model: 'Categoria',
+          model: 'Categorias',
           key: 'id'
         }
       },
